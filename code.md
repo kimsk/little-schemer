@@ -29,7 +29,7 @@ turn, and asks if each S-expression is an atom, until it runs out of S-expressio
       ((eq? (car lat) a) #t)
       (else (member? a (cdr lat))))))
 ```
-or
+or (from the book)
 ``` scheme
 (define member? (lambda (a lat)
   (cond
@@ -37,6 +37,32 @@ or
     (else (or (eq? (car lat) a)
             (member? a (cdr lat)))))))
 ```
+
+## `rember` (remove a member)
+
+It takes an atom and a lat as its arguments, and makes a new lat with the first occurrence of the atom in the old lat removed.
+
+``` scheme
+(define rember
+  (lambda (a lat)
+    (cond
+      ((null? lat) lat)
+      ((eq? (car lat) a) (cdr lat))
+      (else (cons (car lat) (rember a (cdr lat)))))))
+```
+
+of (from the book)
+``` scheme
+(define rember (lambda (a lat)
+  (cond
+    ((n·ull? lat) (quote ()))
+    (else (cond
+      ((eq? (car lat) a) (cdr lat))
+      (else (cons (car lat)
+        (rember a
+          (cdr lat)))))))))
+```
+
 
 ## Note
 - S-Expression: `atom` or `list`
