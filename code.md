@@ -139,7 +139,10 @@ It takes three arguments: the atoms new and old, and a lat.
 
 ```
 
-## `multirember`
+## `multirember`, `multiinsertR`, `multiinsertL`, and `multisubst`
+
+> 4th commandment: Always change at least one argument while recurring. It must be changed to be closer to termination. The changing argument must be tested in the termination condition: when using `cdr`, test termination with `null?`
+
 
 ``` scheme
 (define multirember
@@ -148,14 +151,7 @@ It takes three arguments: the atoms new and old, and a lat.
       ((null? lat) lat)
       ((eq? (car lat) a) (multirember a (cdr lat)))
       (else (cons (car lat) (multirember a (cdr lat)))))))
-```
 
-## `multiinsertR`, `multiinsertL`, and `multisubst`
-
-> 4th commandment: Always change at least one argument while recurring. It must be changed to be closer to termination. The changing argument must be tested in the termination condition: when using `cdr`, test termination with `null?`
-
-
-``` scheme
 (define multiinsertR
   (lambda (new old lat)
     (cond
