@@ -94,9 +94,17 @@ any function.
       (else (cons (car (car l)) (firsts (cdr l)))))))
 ```
 
-## `insertR`, `insertL`, and `subst`
+## `insertR`, `insertL`, `subst`, and `subst2`
 
-It takes three arguments: the atoms new and old, and a lat. The function insertR builds a lat with new inserted to the right of the first occurrence of old.
+It takes three arguments: the atoms new and old, and a lat. 
+- `insertR` builds a lat with `new` inserted to the right of the first occurrence of `old`.
+- `insertL` builds a lat with `new` inserted to the left of the first occurrence of `old`.
+- The function `subst` builds a lat with `new` replaced the first occurrence of `old`.
+
+`(subst2 new o1 o2 lat)`
+- `subst2` replaces either the first occurrence of `o1` or the first occurrence of `o2` by `new`.
+
+
 
 ``` scheme
 (define insertR
@@ -121,6 +129,53 @@ It takes three arguments: the atoms new and old, and a lat. The function insertR
       ((null? lat) lat)
       ((eq? (car lat) old) (cons new (cdr lat)))
       (else (cons (car lat) (subst new old (cdr lat)))))))
+
+(define subst2
+  (lambda (new o1 o2 lat)
+    (cond
+      ((null? lat) lat)
+      ((or (eq? (car lat) o1) (eq? (car lat) o2)) (cons new (cdr lat)))
+      (else (cons (car lat) (subst2 new o1 o2 (cdr lat)))))))
+
+```
+
+## `multirember`
+
+``` scheme
+(define multirember
+  (lambda (a lat)
+    (cond
+      ((null? lat) lat)
+      ((eq? (car lat) a) (multirember a (cdr lat)))
+      (else (cons (car lat) (multirember a (cdr lat)))))))
+```
+
+## `multiinsertR`, `multiinsertL`, and `multisubst`
+
+> 4th commandment: Always change at least one argument while recurring. It must be changed to be closer to termination. The changing argument must be tested in the termination condition: when using `cdr`, test termination with `null?`
+
+
+``` scheme
+(define multiinsertR
+  (lambda (new old lat)
+    (cond
+      ((null? lat) lat)
+      ((eq? (car lat) old) (cons old (cons new (multiinsertR new old (cdr lat)))))
+      (else (cons (car lat) (multiinsertR new old (cdr lat)))))))
+
+(define multiinsertL
+  (lambda (new old lat)
+    (cond
+      ((null? lat) lat)
+      ((eq? (car lat) old) (cons new (cons old (multiinsertL new old (cdr lat)))))
+      (else (cons (car lat) (multiinsertL new old (cdr lat)))))))
+
+(define multisubst
+  (lambda (new old lat)
+    (cond
+      ((null? lat) lat)
+      ((eq? (car lat) old) (cons new (multisubst new old (cdr lat))))
+      (else (cons (car lat) (multisubst new old (cdr lat)))))))
 ```
 
 ## Note

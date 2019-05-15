@@ -18,7 +18,7 @@ any function.
 - When building a list, describe the first typical element, and then `cons` it onto the natu­ral recursion.
 
 ### The Fourth Commandment
-- Always change at least one argument while recurring. When recurring on a list of `atoms`, `lat`, use `(cdrlat)`. 
+- Always change at least one argument while recurring. When recurring on a list of `atoms`, `lat`, use `(cdr lat)`. 
 - When recurring on a num­ber, `n`, use `(sub1 n)`.
 - And when recurring on a list of S-expressions, `l`, use `(carl)` and `(cdr l)` if neither `(null? l)` nor `(atom? (carl))` are true.
 It must be changed to be closer to termina­tion. The changing argument must be tested in the termination condition:
