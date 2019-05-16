@@ -174,6 +174,42 @@ It takes three arguments: the atoms new and old, and a lat.
       (else (cons (car lat) (multisubst new old (cdr lat)))))))
 ```
 
+## `add1`, `sub1`, `zero?`, `o+`, and `o-`
+
+> For number, use `zero?` for `null?`, and `add1` or `sub1` as `cons`
+
+``` scheme
+(define add1
+  (lambda (n)
+    (+ n 1)))
+
+(define sub1
+  (lambda (n)
+    (- n 1)))
+
+(define zero?
+  (lambda (n)
+    (eq? n 0)))
+
+(define o++
+  (lambda (n m)
+    (cond
+      ((zero? n) m)
+      (else (o++ (sub1 n) (add1 m))))))
+
+(define o+
+  (lambda (n m)
+    (cond
+      ((zero? m) n)
+      (else (add1 (o+ n (sub1 m)))))))
+
+(define o-
+  (lambda (n m)
+    (cond
+      ((zero? m) n)
+      (else (sub1 (o- n (sub1 m)))))))
+```
+
 ## Note
 - S-Expression: `atom` or `list`
 - empty or null list: `()`
