@@ -210,6 +210,18 @@ It takes three arguments: the atoms new and old, and a lat.
       (else (sub1 (o- n (sub1 m)))))))
 ```
 
+## `addtup`
+
+`addtup` builds a number by totaling all the numbers in its argument.
+
+``` scheme
+(define addtup
+  (lambda (tup)
+    (cond
+      ((null? tup) 0)
+      (else (o+ (car tup) (addtup (cdr tup)))))))
+```
+
 ## Note
 - S-Expression: `atom` or `list`
 - empty or null list: `()`
