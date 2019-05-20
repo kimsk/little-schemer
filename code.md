@@ -222,6 +222,34 @@ It takes three arguments: the atoms new and old, and a lat.
       (else (o+ (car tup) (addtup (cdr tup)))))))
 ```
 
+## `x`
+
+```
+(x123) = 12+(x 12 2)
+       = 12+12+(x 12 1)
+       = 12+12+12+(x 12 0)
+       = 12+12+12+0
+```
+
+``` scheme
+(define x
+  (lambda (n m)
+    (cond
+      ((zero? m) 0)
+      (else (o+ n (x n (sub1 m)))))))
+```
+
+## `tup+`
+
+``` scheme
+(define tup+
+  (lambda (tup1 tup2)
+    (cond
+      ((and (null? tup1) (null? tup2)) '())
+      (else (cons (+ (car tup1) (car tup2)) 
+                    (tup+ (cdr tup1) (cdr tup2)))))))
+```
+
 ## Note
 - S-Expression: `atom` or `list`
 - empty or null list: `()`
