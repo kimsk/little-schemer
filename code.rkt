@@ -150,13 +150,53 @@
   (lambda (tup1 tup2)
     (cond
       ((and (null? tup1) (null? tup2)) '())
+      ((null? tup1) tup2)
+      ((null? tup2) tup1)
       (else (cons (+ (car tup1) (car tup2))
                   (tup+ (cdr tup1) (cdr tup2)))))))
 
 (define >
   (lambda (n m)
     (cond
-      ((and (zero? n) (zero? m) #f))
+      ;((and (zero? n) (zero? m) #f))
       ((zero? n) #f)
       ((zero? m) #t)
       (else (> (sub1 n) (sub1 m))))))
+
+(define <
+  (lambda (n m)
+    (cond      
+      ((zero? m) #f)
+      ((zero? n) #t)
+      (else (< (sub1 n) (sub1 m))))))
+
+(define =
+  (lambda (n m)
+    (cond
+      ((and (zero? n) (zero? m)) #t)
+      ((or (zero? n) (zero? m)) #f)
+      (else (= (sub1 n) (sub1 m))))))
+
+(define =2
+  (lambda (n m)
+    (cond
+      ((zero? m) (zero? n))
+      ((zero? n) #f)
+      (else (=2 (sub1 n) (sub1 m))))))
+
+(define =3
+  (lambda (n m)
+    (cond
+      ((< n m) #f)
+      ((> n m) #f)
+      (else #t))))
+
+(define =4
+  (lambda (n m)
+    (and (not (< n m)) (not (> n m)))))
+
+(define ^
+  (lambda (n m)
+    (cond
+      ((zero? m) 1)
+      (else (x n (^ n (sub1 m)))))))
