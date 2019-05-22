@@ -250,6 +250,17 @@ It takes three arguments: the atoms new and old, and a lat.
                     (tup+ (cdr tup1) (cdr tup2)))))))
 ```
 
+## `>`
+``` scheme
+(define >
+  (lambda (n m)
+    (cond
+      ((and (zero? n) (zero? m) #f))
+      ((zero? n) #f)
+      ((zero? m) #t)
+      (else (> (sub1 n) (sub1 m))))))
+```
+
 ## Note
 - S-Expression: `atom` or `list`
 - empty or null list: `()`
