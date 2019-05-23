@@ -222,23 +222,6 @@ It takes three arguments: the atoms new and old, and a lat.
       (else (o+ (car tup) (addtup (cdr tup)))))))
 ```
 
-## `x`
-
-```
-(x123) = 12+(x 12 2)
-       = 12+12+(x 12 1)
-       = 12+12+12+(x 12 0)
-       = 12+12+12+0
-```
-
-``` scheme
-(define x
-  (lambda (n m)
-    (cond
-      ((zero? m) 0)
-      (else (o+ n (x n (sub1 m)))))))
-```
-
 ## `tup+`
 
 ``` scheme
@@ -312,6 +295,78 @@ It takes three arguments: the atoms new and old, and a lat.
       ((zero? m) 1)
       (else (x n (^ n (sub1 m)))))))
 ```
+
+## `x`
+
+``` scheme
+(x 12 3) = 12 + (x 12 2)
+         = 12 + 12 + (x 12 1)
+         = 12 + 12 + 12 + (x 12 0) ; ((zero? 0) 0)
+         = 12 + 12 + 12 + 0
+```
+
+``` scheme
+(define x
+  (lambda (n m)
+    (cond
+      ((zero? m) 0)
+      (else (o+ n (x n (sub1 m)))))))
+```
+
+## `/`
+
+``` scheme
+(/ 15 4) = 1 + (/ 11 4)
+         = 1 + (1 + (/ 7 4))
+         = 1 + (1 + (1 + (/ 3 4))) ; ((< 3 4) 0)
+         = 1 + (1 + (1 + 0))
+```
+
+``` scheme
+(define /
+  (lambda (n m)
+    (cond
+      ((< n m) 0)
+      (else (add1 (/ (- n m) m))))))
+```
+
+## `length`, `pick`, `rempick`
+
+``` scheme
+(define length
+  (lambda (lat)
+    (cond
+      ((null? lat) 0)
+      (else (add1 (length (cdr lat)))))))
+
+(length '(1 2 3))
+1 + (length '(2 3)) ; (cdr lat) => (2 3)
+1 + 1 + (length '(3))
+1 + 1 + 1 + (length '())
+1 + 1 + 1 + 0
+```
+
+``` scheme
+(define pick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (car lat))
+      (else (pick (sub1 n) (cdr lat))))))
+
+(pick 3 '(0 1 2 3 4))
+(pick (sub1 3) (cdr '(0 1 2 3 4)))
+(pick (sub1 2) (cdr '(1 2 3 4)))
+((zero? (sub1 1)) (car '(2 3 4))) ; 2
+```
+
+``` scheme
+(define rempick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (cdr lat))
+      (else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
+```
+
 
 ## Note
 - S-Expression: `atom` or `list`
