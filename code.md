@@ -6,7 +6,9 @@
     (and (not (pair? x)) (not (null? x)))))
 ```
 
-## `lat?`
+> `pair?` : is a list?
+
+## `lat?` (is a list of atoms?)
 `lat?` looks at each S-expression in a list, in
 turn, and asks if each S-expression is an atom, until it runs out of S-expressions. If it runs out without encountering a list, the value is `#t` . If it finds a list, the value is `#f`-false .
 
@@ -418,6 +420,100 @@ It takes three arguments: the atoms new and old, and a lat.
     (cond
       ((one? n) (cdr lat))
       (else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
+```
+
+## `rember*`, `insertR*`, `occur*`, `insertL*`, `member*`
+
+> When recurring on a list of S-expressions, `l`, ask three question about it: `(null? l)`, `(atom? (car l))`, and `else`.
+
+> Because all *-functions work on lists that are either
+> - empty,
+> - an atom consed onto a list, or
+> - a list consed onto a list.
+
+``` scheme
+(define rember*
+  (lambda (a l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+         ((eq? a (car l))
+          (rember* a (cdr l)))
+         (else (cons (car l)
+                     (rember* a (cdr l))))))
+      (else (cons (rember* a (car l))
+                  (rember* a (cdr l)))))))
+
+(define insertR*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+         ((eq? old (car l))
+          (cons old (cons new (insertR* new old (cdr l)))))
+         (else (cons (car l) (insertR* new old (cdr l))))))
+      (else (cons (insertR* new old (car l))
+                  (insertR* new old (cdr l)))))))
+
+(define occur*
+  (lambda (a l)
+    (cond
+      ((null? l) 0)
+      ((atom? (car l))
+       (cond
+         ((eq? a (car l))
+          (add1 (occur* a (cdr l))))
+         (else
+          (occur* a (cdr l)))))
+      (else
+       (+ (occur* a (car l)) (occur* a (cdr l)))))))
+
+(define subst*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+         ((eq? old (car l))
+          (cons new (subst* new old (cdr l))))
+         (else
+          (cons old (subst* new old (cdr l))))))
+      (else
+       (cons (subst* new old (car l)) (subst* new old (cdr l)))))))
+
+(define insertL*
+  (lambda (new old l)
+    (cond
+      ((null? l) '())
+      ((atom? (car l))
+       (cond
+         ((eq? old (car l))
+          (cons new (cons old (insertL* new old (cdr l)))))
+         (else (cons (car l) (insertL* new old (cdr l))))))
+      (else (cons (insertL* new old (car l))
+                  (insertL* new old (cdr l)))))))
+
+(define member*
+  (lambda (a l)
+    (cond
+      ((null? l) #f)
+      ((atom? (car l))
+       (or
+         (eq? a (car l))
+         (member* a (cdr l))))
+      (else (or (member* a (car l)) (member* a (cdr l)))))))
+```
+
+## `leftmost`
+
+``` scheme
+(define leftmost
+  (lambda (l)
+    (cond
+      ((atom? (car l)) (car l))
+      (else (leftmost (car l))))))
 ```
 
 ## Note
