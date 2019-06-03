@@ -516,6 +516,31 @@ It takes three arguments: the atoms new and old, and a lat.
       (else (leftmost (car l))))))
 ```
 
+## `eqlist?`, `equal?`
+
+
+
+``` scheme
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+      ((and (null? l1) (null? l2)) #t)
+      ((or (null? l1) (null? l2)) #f)
+      ((and (atom? (car l1)) (atom? (car l2)))
+           (and (eqan? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2))))
+      ((or (atom? (car l1)) (atom? (car l2))) #f)
+      (else (and (eqlist? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))))))
+
+; An S-Expression is either an atom or a list of S-Expresions.
+(define equal?
+  (lambda (s1 s2)
+    (cond
+      ((and (atom? s1) (atom? s2)) (eq? s1 s2))
+      ((or (atom? s1) (atom? s2)) #f)
+      (else (eqlist? s1 s2)))))
+      
+```
+
 ## Note
 - S-Expression: `atom` or `list`
 - empty or null list: `()`
