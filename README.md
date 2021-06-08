@@ -1,5 +1,37 @@
 # [The Little Schemer](https://www.amazon.com/Little-Schemer-Daniel-P-Friedman/dp/0262560992)
 
+# Basic
+> `atom` is a string of characters
+``` lisp
+atom
+turkey
+u
+1492
+*abc$
+```
+
+> `list` is a collection of `S-expression(s)` enclosed with parenthesis
+``` lisp
+(atom)
+(atom turkey or)
+()
+```
+
+> `atom` and `list` are `S-expressions`
+
+> `null` or `()` or empty list is `S-expression`
+
+## The Law of `Car`
+The primitive car is defined only for non-empty lists.
+
+> `car` gives 1st `S-expression` of the `list`, e.g., `( car l)`
+
+## The Law of `Cdr`
+The primitive `cdr` is defined only for non-empty lists. The `cdr` of any nonempty list is always another list.
+
+> `(cdr (a b c))` is `(b c)`
+> `cdr` is pronounced **could-er.**
+
 ## The Ten Commandments
 
 ### The First Commandment
